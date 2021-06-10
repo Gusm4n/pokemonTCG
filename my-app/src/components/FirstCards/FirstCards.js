@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 function FirstCards() {
  const [refresh, setRefresh] = useState(false);
+ const [data, setData] = useState(null);
  
 useEffect(() => {  
     async function fetchCards(){
@@ -17,26 +18,27 @@ useEffect(() => {
             method: 'GET'
         })
 
-        // const parsed = await response.json()
-        // const {data} = parsed
-
-        const {data} = await response.json()
-
+        const parsed = await response.json()
+        const {data} = parsed
         console.log(data)
+        setData(data)
+        
+        
+        // const data = parsed.data
+
+        // Retorno que atualmente funciona
+        // const {data} = await response.json()
+        // console.log(data)
      }
 
      fetchCards();
  },[refresh])
-
-    useEffect(() => {
-        console.log('refreshState', refresh)
-    }, [refresh])
-
+    
   return (
-    <div className="FirstCards">
+    <div>
       <h1>Pokemão mão mão</h1>
-      
-      <button onClick={() => setRefresh(!refresh)}>atualizar</button>  
+      {/* <button onClick={() => setRefresh(!refresh)}>atualizar</button>   */}
+       <h1>{data && data.map((item)=><img key={item.id} src={item.images.small}></img>)}</h1> 
     </div>
   );
 }
